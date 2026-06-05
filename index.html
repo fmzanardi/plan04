@@ -492,18 +492,14 @@ async function analyzePhoto() {
   const base64 = photoDataURL.split(",")[1];
   const mediaType = photoDataURL.split(";")[0].split(":")[1];
   try {
-    const resp = await fetch("https://api.anthropic.com/v1/messages", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({
-      model:"claude-sonnet-4-20250514", max_tokens:1000,
-      messages:[{role:"user", content:[
-        {type:"image", source:{type:"base64", media_type:mediaType, data:base64}},
-        {type:"text", text:`Analyze this food image. Return ONLY a JSON object, no markdown, no extra text:
-{"name":"specific food name","portion":"estimated portion","cal":450,"p":42,"c":38,"f":12}
-All numbers as integers.`}
-      ]}]
-    })});
+    const resp = await fetch("https://plan04-api.vercel.app/api/analyze", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({image:base64, mediaType})
+    });
     const data = await resp.json();
-    const text = data.content?.filter(b=>b.type==="text").map(b=>b.text).join("")||"";
-    pendingFood = JSON.parse(text.replace(/```json|```/g,"").trim());
+    if(data.error) throw new Error(data.error);
+    pendingFood = data;
     pendingFood.photo = photoDataURL;
     renderModalResult();
   } catch(err) {
