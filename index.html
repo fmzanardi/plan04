@@ -8,253 +8,513 @@
 <meta name="apple-mobile-web-app-title" content="Plan 04">
 <meta name="theme-color" content="#f5f2ed">
 <title>Plan 04</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#f5f2ed;--white:#fff;--surface:#faf8f5;--border:#e8e4dc;--border2:#f0ece5;
-  --ink:#0f0e0c;--muted:#9a9690;--muted2:#c0bdb8;
-  --push:#C8390A;--pull:#1A4FA8;--lower:#1A7A48;--bjj:#B8860B;--pump:#7B2FBE;--rest:#999;--run:#0a7a8a;
-  --protein:#C8390A;--carbs:#1A4FA8;--fat:#1A7A48;
-  --safe-top:env(safe-area-inset-top,0px);--safe-bot:env(safe-area-inset-bottom,0px);
+  --bg:#f5f2ed;
+  --white:#ffffff;
+  --surface:#faf8f5;
+  --border:#e8e4dc;
+  --border2:#f0ece5;
+  --ink:#0f0e0c;
+  --muted:#9a9690;
+  --muted2:#c8c4bc;
+  --push:#C8390A;
+  --pull:#1A4FA8;
+  --lower:#1A7A48;
+  --bjj:#B8860B;
+  --pump:#7B2FBE;
+  --rest:#999999;
+  --run:#0a7a8a;
+  --protein:#C8390A;
+  --carbs:#1A4FA8;
+  --fat:#1A7A48;
+  --safe-top:env(safe-area-inset-top,0px);
+  --safe-bot:env(safe-area-inset-bottom,0px);
 }
 html,body{height:100%;background:var(--bg);}
-body{color:var(--ink);font-family:'Barlow',sans-serif;font-weight:400;max-width:480px;margin:0 auto;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
-button{font-family:inherit;cursor:pointer;}
-input,select,textarea{font-family:inherit;}
+body{color:var(--ink);font-family:'Barlow',sans-serif;font-weight:400;max-width:430px;margin:0 auto;-webkit-font-smoothing:antialiased;overscroll-behavior:none;}
+button{font-family:inherit;cursor:pointer;border:none;background:none;}
+input,select{font-family:inherit;}
 
-/* BOTTOM NAV */
-#bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(245,242,237,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:var(--safe-bot);}
-.bn-tab{flex:1;padding:10px 4px 8px;border:none;background:transparent;display:flex;flex-direction:column;align-items:center;gap:3px;}
-.bn-icon{font-size:22px;line-height:1;}
-.bn-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);}
-.bn-tab.active .bn-label{color:var(--ink);}
-.bn-dot{width:4px;height:4px;border-radius:50%;background:var(--ink);margin-top:1px;opacity:0;}
-.bn-tab.active .bn-dot{opacity:1;}
-#scroll{padding-bottom:calc(72px + var(--safe-bot));min-height:100vh;}
-.page-header{padding:calc(var(--safe-top) + 16px) 18px 0;}
-.ph-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
-.ph-title{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.01em;line-height:1;margin-bottom:14px;}
-.card{background:var(--white);border:1px solid var(--border);border-radius:13px;overflow:hidden;margin-bottom:10px;}
-.card-pad{padding:14px 16px;}
+/* ── BOTTOM NAV ── */
+#nav{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;
+  background:rgba(245,242,237,0.96);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-top:1px solid var(--border);
+  display:grid;grid-template-columns:1fr 1fr;
+  padding-bottom:var(--safe-bot);
+  z-index:100;
+}
+.nav-btn{
+  padding:12px 0 10px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.nav-icon{font-size:20px;line-height:1;}
+.nav-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--muted);transition:color 0.15s;
+}
+.nav-btn.active .nav-label{color:var(--ink);}
+.nav-line{
+  width:20px;height:2px;border-radius:1px;
+  background:transparent;margin-top:1px;transition:background 0.15s;
+}
+.nav-btn.active .nav-line{background:var(--ink);}
 
-/* TODAY */
-.today-wrap{padding:0 16px 8px;}
-.activity-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:14px;}
-.act-btn{padding:14px 12px;border-radius:12px;border:2px solid var(--border);background:var(--white);text-align:left;transition:all 0.15s;position:relative;}
-.act-btn.active{border-color:var(--act-color);background:color-mix(in srgb,var(--act-color) 8%,transparent);}
-.act-btn.scheduled::after{content:"SCHEDULED";position:absolute;top:6px;right:8px;font-family:'Barlow Condensed',sans-serif;font-size:8px;font-weight:700;letter-spacing:0.1em;color:var(--act-color);opacity:0.7;}
-.act-icon{font-size:24px;margin-bottom:6px;}
-.act-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.03em;display:block;}
-.act-cal{font-size:11px;color:var(--muted);margin-top:1px;}
-.macro-targets{background:var(--ink);border-radius:13px;padding:16px;margin-bottom:14px;}
-.mt-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;}
-.mt-cal{font-family:'Barlow Condensed',sans-serif;font-size:48px;font-weight:800;color:#f5f2ed;line-height:1;letter-spacing:-0.02em;}
-.mt-cal span{font-size:16px;color:#666;font-weight:400;}
-.mt-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#555;}
-.mt-macros{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid #222;padding-top:12px;}
-.mt-macro{text-align:center;border-right:1px solid #222;}
-.mt-macro:last-child{border-right:none;}
-.mt-macro-val{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;line-height:1;}
-.mt-macro-g{font-size:11px;color:#777;}
-.mt-macro-lbl{font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
-.tracker-card{background:var(--white);border:1px solid var(--border);border-radius:13px;padding:14px 16px;margin-bottom:14px;}
-.tracker-row{margin-bottom:10px;}
-.tracker-row:last-child{margin-bottom:0;}
-.tr-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.tr-name{font-size:13px;font-weight:600;}
-.tr-vals{font-size:12px;color:var(--muted);}
-.tr-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;}
-.tr-fill{height:100%;border-radius:4px;transition:width 0.5s ease;}
-.food-log-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.food-log-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;}
-.add-food-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;border:none;background:var(--ink);color:#f5f2ed;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.06em;}
-.food-entry{padding:11px 0;border-bottom:1px solid var(--border2);display:flex;gap:10px;align-items:flex-start;}
-.food-entry:last-child{border-bottom:none;}
-.fe-thumb{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;}
-.fe-thumb-ph{width:52px;height:52px;border-radius:8px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.fe-info{flex:1;}
-.fe-name{font-size:13px;font-weight:600;line-height:1.3;}
-.fe-portion{font-size:11px;color:var(--muted);margin-top:2px;}
-.fe-macros{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;}
-.fe-macro{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
-.fe-macro.p{background:rgba(200,57,10,0.08);color:var(--protein);}
-.fe-macro.c{background:rgba(26,79,168,0.08);color:var(--carbs);}
-.fe-macro.f{background:rgba(26,122,72,0.08);color:var(--fat);}
-.fe-macro.cal{background:rgba(0,0,0,0.05);color:#555;}
-.fe-del{background:none;border:none;color:var(--muted2);font-size:18px;padding:4px;flex-shrink:0;}
-.food-empty{text-align:center;padding:28px 0;color:var(--muted);}
+/* ── SCROLL ── */
+#scroll{
+  padding-bottom:calc(68px + var(--safe-bot));
+  min-height:100vh;
+}
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;display:flex;align-items:flex-end;justify-content:center;}
-.modal-sheet{background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:480px;padding:20px 20px calc(20px + var(--safe-bot));max-height:92vh;overflow-y:auto;}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
-.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;margin-bottom:16px;}
-.modal-close{float:right;background:none;border:none;font-size:22px;color:var(--muted);margin-top:-4px;}
-.upload-area{border:2px dashed var(--border);border-radius:12px;padding:32px;text-align:center;margin-bottom:14px;background:var(--surface);position:relative;}
-.upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.preview-img{width:100%;border-radius:12px;margin-bottom:14px;max-height:240px;object-fit:cover;}
-.analyze-btn{width:100%;padding:15px;border-radius:12px;border:none;background:var(--ink);color:#f5f2ed;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;}
-.analyze-btn:disabled{background:var(--border);color:var(--muted);}
-.analyzing-state{text-align:center;padding:20px;}
-.analyzing-spinner{font-size:32px;animation:spin 1s linear infinite;display:inline-block;}
-@keyframes spin{to{transform:rotate(360deg);}}
-.result-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;}
-.result-name{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;margin-bottom:4px;}
-.result-portion{font-size:12px;color:var(--muted);margin-bottom:10px;}
-.result-macros{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
-.rm{text-align:center;padding:8px 4px;border-radius:8px;}
-.rm-val{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;line-height:1;}
-.rm-lbl{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
-.rm.cal{background:rgba(0,0,0,0.05);}
-.rm.p{background:rgba(200,57,10,0.08);color:var(--protein);}
-.rm.c{background:rgba(26,79,168,0.08);color:var(--carbs);}
-.rm.f{background:rgba(26,122,72,0.08);color:var(--fat);}
-.confirm-btn{width:100%;padding:15px;border-radius:12px;border:none;background:var(--lower);color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.06em;margin-bottom:8px;}
-.retry-btn{width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;}
+/* ── TODAY PAGE ── */
+.today-page{padding:0 0 24px;}
 
-/* TRAINING */
-.training-wrap{padding:0 16px 8px;}
-.day-strip{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:14px;scrollbar-width:none;}
+/* Hero */
+.hero{
+  padding:calc(var(--safe-top) + 24px) 20px 24px;
+  background:var(--ink);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;
+  right:-60px;top:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,0.04) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.hero-date{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;
+  color:#666;
+}
+.hero-day-badge{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:4px 10px;border-radius:5px;
+  background:rgba(255,255,255,0.08);color:#aaa;
+}
+.hero-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:clamp(48px,12vw,64px);font-weight:800;
+  line-height:0.9;letter-spacing:-0.02em;color:#f5f2ed;
+  margin-bottom:6px;
+}
+.hero-subtitle{
+  font-size:13px;color:#666;margin-bottom:24px;
+}
+
+/* Activity pills */
+.activity-pills{
+  display:flex;gap:6px;flex-wrap:wrap;
+  padding-bottom:2px;
+}
+.ap{
+  padding:7px 14px;border-radius:8px;
+  border:1.5px solid rgba(255,255,255,0.1);
+  background:rgba(255,255,255,0.05);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:0.06em;
+  color:#888;transition:all 0.15s;display:flex;align-items:center;gap:5px;
+}
+.ap.active{background:var(--ap-col,#fff);border-color:var(--ap-col,#fff);color:#fff;}
+.ap.scheduled-indicator::before{
+  content:'';width:5px;height:5px;border-radius:50%;
+  background:currentColor;opacity:0.6;
+}
+
+/* Macro cards */
+.macro-section{padding:16px 16px 0;}
+.macro-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
+.macro-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:13px;padding:14px 15px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.macro-card.full{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;}
+.mc-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+}
+.mc-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;line-height:1;letter-spacing:-0.02em;
+}
+.mc-unit{font-size:12px;font-weight:400;color:var(--muted);margin-left:2px;}
+.mc-note{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Override note */
+.override-note{
+  margin:12px 16px 0;
+  padding:9px 13px;
+  background:rgba(184,134,11,0.08);
+  border-left:3px solid var(--bjj);
+  border-radius:0 8px 8px 0;
+  font-size:11px;color:#7a5a00;
+  display:flex;align-items:center;gap:7px;
+}
+
+/* History section */
+.history-section{padding:0 16px;}
+.hs-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:20px 0 12px;
+  border-top:1px solid var(--border);
+  cursor:pointer;
+}
+.hs-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--muted);
+}
+.hs-toggle{
+  font-size:18px;color:var(--muted2);transition:transform 0.2s;
+}
+.hs-toggle.open{transform:rotate(180deg);}
+.hist-tabs{
+  display:flex;gap:0;background:var(--border);
+  border-radius:8px;padding:2px;margin-bottom:12px;
+}
+.ht{
+  flex:1;padding:7px 0;border-radius:6px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--muted);transition:all 0.15s;
+}
+.ht.active{background:var(--white);color:var(--ink);}
+.hist-entry{
+  background:var(--white);border:1px solid var(--border);
+  border-left:3px solid var(--ec,#888);
+  border-radius:11px;padding:13px 14px;margin-bottom:7px;
+}
+.he-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.he-title{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;}
+.he-date{font-size:11px;color:var(--muted);margin-top:1px;}
+.he-right{font-size:11px;color:var(--muted);text-align:right;}
+.he-pills{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px;}
+.he-pill{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;}
+.he-rows{}
+.he-row{display:flex;justify-content:space-between;padding:3px 0;border-top:1px solid var(--border2);font-size:11px;color:var(--muted);}
+.he-summary{font-size:12px;color:#666;margin-top:3px;}
+.hist-empty{text-align:center;padding:32px 0;color:var(--muted2);}
+
+/* ── TRAIN PAGE ── */
+.train-page{padding:0 16px 24px;}
+
+/* Day strip */
+.day-strip-wrap{
+  padding:calc(var(--safe-top) + 16px) 0 0;
+  position:sticky;top:0;
+  background:rgba(245,242,237,0.96);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  z-index:50;margin:0 -16px;padding-left:16px;padding-right:16px;
+  border-bottom:1px solid var(--border);
+}
+.day-strip{
+  display:flex;gap:5px;overflow-x:auto;
+  padding-bottom:12px;scrollbar-width:none;
+}
 .day-strip::-webkit-scrollbar{display:none;}
-.ds-btn{flex:0 0 auto;padding:7px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--white);font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:0.08em;color:var(--muted);position:relative;transition:all 0.15s;}
-.ds-btn.active{border-color:var(--day-color);background:color-mix(in srgb,var(--day-color) 10%,transparent);color:var(--day-color);}
-.ds-today-dot{position:absolute;top:2px;right:3px;width:4px;height:4px;border-radius:50%;}
-.session-card{background:var(--white);border:1px solid var(--border);border-radius:13px;margin-bottom:10px;overflow:hidden;}
-.sc-topbar{height:4px;width:100%;}
-.sc-header{padding:13px 15px 11px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border2);}
-.sc-title-wrap{display:flex;align-items:center;gap:10px;}
+.ds{
+  flex:0 0 auto;padding:8px 13px;border-radius:9px;
+  border:1.5px solid var(--border);background:var(--white);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.08em;
+  color:var(--muted);position:relative;transition:all 0.15s;
+}
+.ds.active{
+  border-color:var(--dc);
+  background:color-mix(in srgb,var(--dc) 10%,transparent);
+  color:var(--dc);
+}
+.ds-dot{
+  position:absolute;top:3px;right:3px;
+  width:4px;height:4px;border-radius:50%;
+}
+
+/* Day header */
+.day-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 0 14px;
+}
+.dh-left{}
+.dh-planned{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:3px;
+}
+.dh-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:26px;font-weight:800;line-height:1;letter-spacing:-0.01em;
+}
+/* Ring */
+.ring-wrap{position:relative;width:48px;height:48px;}
+.ring-wrap svg{position:absolute;top:0;left:0;transform:rotate(-90deg);}
+.ring-inner{
+  position:absolute;inset:5px;border-radius:50%;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;
+}
+
+/* Session card */
+.session-card{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:14px;margin-bottom:10px;overflow:hidden;
+}
+.sc-top{height:3px;}
+.sc-head{
+  padding:13px 15px 11px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border2);
+}
+.sc-head-left{display:flex;align-items:center;gap:10px;}
 .sc-icon{font-size:22px;}
-.sc-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;}
+.sc-title{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;}
 .sc-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+.sc-remove{color:var(--muted2);font-size:20px;padding:4px;line-height:1;}
 .sc-body{padding:14px 15px;}
-.stype-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:14px;}
-.stype-btn{padding:10px 4px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);text-align:center;transition:all 0.15s;}
-.stype-btn.active{border-color:var(--st-color);background:color-mix(in srgb,var(--st-color) 10%,transparent);}
-.stype-icon{font-size:18px;margin-bottom:3px;}
-.stype-name{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;letter-spacing:0.03em;}
-.input-label{font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px;letter-spacing:0.06em;text-transform:uppercase;display:block;}
-.input-field{width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:15px;background:var(--surface);color:var(--ink);outline:none;margin-bottom:10px;}
-.input-field:focus{border-color:var(--focus-color,#888);}
-.input-group{display:flex;gap:8px;}
-.input-group>div{flex:1;}
-.intensity-row{display:flex;gap:6px;margin-bottom:10px;}
-.int-btn{flex:1;padding:10px 6px;border-radius:9px;border:1.5px solid var(--border);background:var(--surface);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;text-align:center;transition:all 0.15s;}
+
+/* Session type picker */
+.type-grid{
+  display:flex;gap:6px;margin-bottom:14px;
+}
+.tg-btn{
+  flex:1;padding:10px 6px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--surface);
+  text-align:center;transition:all 0.15s;
+}
+.tg-btn.active{
+  border-color:var(--tc);
+  background:color-mix(in srgb,var(--tc) 10%,transparent);
+}
+.tg-icon{font-size:18px;margin-bottom:3px;}
+.tg-name{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:11px;font-weight:700;letter-spacing:0.04em;
+}
+
+/* Form fields */
+.f-label{
+  display:block;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:5px;
+}
+.f-input{
+  width:100%;padding:11px 13px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-size:15px;background:var(--surface);color:var(--ink);
+  outline:none;margin-bottom:12px;
+  transition:border-color 0.15s;
+}
+.f-input:focus{border-color:var(--fc,#888);}
+.f-row{display:flex;gap:10px;}
+.f-row>div{flex:1;}
+.intensity-btns{display:flex;gap:6px;margin-bottom:12px;}
+.int-btn{
+  flex:1;padding:10px 6px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--surface);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:13px;font-weight:700;text-align:center;
+  transition:all 0.15s;
+}
 .int-btn.active{color:#fff;border-color:transparent;}
-.pace-display{background:var(--ink);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.pd-label{font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#666;}
-.pd-val{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#f5f2ed;line-height:1;}
-.pd-unit{font-size:12px;color:#666;margin-top:2px;}
-.gym-plan-select{width:100%;padding:11px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;background:var(--surface);color:var(--ink);outline:none;margin-bottom:14px;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23999' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
-.section-head-train{font-family:'Barlow Condensed',sans-serif;font-size:9px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;padding:12px 0 7px;border-bottom:1px solid var(--border2);}
-.section-head-train.abs-h{color:var(--pump);}
-.section-head-train.norm-h{color:var(--muted);}
-.ex-row{padding:14px 0;border-bottom:1px solid var(--border2);}
-.ex-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+
+/* Pace card */
+.pace-card{
+  background:var(--ink);border-radius:11px;
+  padding:14px 16px;margin-bottom:12px;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.pace-label{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:0.18em;
+  text-transform:uppercase;color:#666;margin-bottom:2px;
+}
+.pace-val{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:36px;font-weight:800;color:#f5f2ed;line-height:1;
+}
+.pace-unit{font-size:12px;color:#666;margin-top:2px;}
+.pace-hint{font-size:11px;color:#555;}
+
+/* Gym plan select */
+.plan-select{
+  width:100%;padding:11px 13px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-size:14px;background:var(--surface);color:var(--ink);
+  outline:none;margin-bottom:14px;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23999' d='M5 7L0 2h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 13px center;
+}
+
+/* Exercise list */
+.ex-section{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:9px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;
+  padding:12px 0 7px;border-bottom:1px solid var(--border2);
+}
+.ex-section.abs-s{color:var(--pump);}
+.ex-section.norm-s{color:var(--muted);}
+.ex-row{padding:13px 0;border-bottom:1px solid var(--border2);}
+.ex-row:last-child{border-bottom:none;}
+.ex-main{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
 .ex-info{flex:1;padding-right:12px;}
 .ex-name{font-size:15px;font-weight:600;line-height:1.3;}
-.ex-sets-lbl{font-size:12px;color:var(--muted);margin-top:4px;}
-.ex-note{font-size:11px;color:var(--muted);margin-top:3px;font-style:italic;}
-.ex-prog{font-size:11px;margin-top:4px;font-weight:500;}
-.weight-btn{padding:9px 12px;background:var(--surface);border:1px solid var(--border);border-radius:9px;font-size:14px;font-weight:700;text-align:center;min-width:62px;line-height:1.2;}
-.weight-unit{font-size:9px;color:var(--muted);font-weight:400;display:block;}
-.weight-input{width:66px;padding:9px 7px;background:var(--surface);border-radius:7px;color:var(--ink);font-size:14px;text-align:center;border:1.5px solid #888;outline:none;}
-.sets-row{display:flex;gap:7px;flex-wrap:wrap;}
-.set-btn{width:46px;height:46px;border-radius:10px;border:2px solid var(--border);background:var(--white);color:var(--muted);font-size:12px;font-weight:700;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:all 0.12s;}
-.set-btn.done{border-color:var(--sc-color,#888);background:color-mix(in srgb,var(--sc-color,#888) 15%,transparent);color:var(--sc-color,#888);}
-.set-num{font-size:14px;line-height:1;}
-.set-lbl{font-size:8px;color:#aaa;font-weight:400;}
-.add-session-btn{width:100%;padding:13px;border-radius:11px;border:1.5px dashed var(--border);background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:0.06em;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;}
-.save-btn{width:100%;padding:14px;border-radius:11px;border:none;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;margin-top:4px;}
-.reset-btn-sm{padding:14px 16px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:13px;}
+.ex-meta{font-size:12px;color:var(--muted);margin-top:3px;}
+.ex-note{font-size:11px;color:var(--muted2);margin-top:2px;font-style:italic;}
+.ex-prog{font-size:11px;font-weight:500;margin-top:3px;}
+.w-btn{
+  padding:9px 11px;background:var(--surface);
+  border:1px solid var(--border);border-radius:9px;
+  font-size:14px;font-weight:700;text-align:center;
+  min-width:60px;line-height:1.2;
+}
+.w-unit{font-size:9px;color:var(--muted);font-weight:400;display:block;}
+.w-input{
+  width:64px;padding:9px 7px;background:var(--surface);
+  border-radius:8px;color:var(--ink);font-size:14px;
+  text-align:center;border:1.5px solid #888;outline:none;
+}
+.sets{display:flex;gap:6px;flex-wrap:wrap;}
+.set{
+  width:44px;height:44px;border-radius:9px;
+  border:2px solid var(--border);background:var(--white);
+  color:var(--muted);font-size:13px;font-weight:700;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:1px;
+  transition:all 0.12s;
+}
+.set.done{
+  border-color:var(--sc);
+  background:color-mix(in srgb,var(--sc) 14%,transparent);
+  color:var(--sc);
+}
+.set-n{font-size:13px;line-height:1;}
+.set-l{font-size:8px;color:#bbb;font-weight:400;}
 
-/* HISTORY */
-.history-wrap{padding:0 16px 8px;}
-.hist-tabs{display:flex;gap:0;background:var(--border);border-radius:9px;padding:2px;margin-bottom:14px;}
-.hist-tab{flex:1;padding:8px 0;border-radius:7px;border:none;background:transparent;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;transition:all 0.15s;}
-.hist-tab.active{background:var(--white);color:var(--ink);}
-.hist-entry{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--ec,#888);border-radius:12px;padding:14px 15px;margin-bottom:8px;}
-.he-head{display:flex;justify-content:space-between;margin-bottom:8px;}
-.he-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;}
-.he-date{font-size:11px;color:var(--muted);}
-.he-row{display:flex;justify-content:space-between;padding:4px 0;border-top:1px solid var(--border2);font-size:12px;}
-.he-macros{display:flex;gap:5px;margin-bottom:6px;flex-wrap:wrap;}
-.he-macro{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
-.hist-empty{text-align:center;padding:60px 20px;color:var(--muted);}
-.ring-wrap{position:relative;width:50px;height:50px;flex-shrink:0;}
-.ring-wrap svg{position:absolute;top:0;left:0;}
-.ring-inner{position:absolute;inset:6px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+/* Action buttons */
+.action-row{display:flex;gap:8px;margin-top:14px;}
+.btn-primary{
+  flex:1;padding:14px;border-radius:11px;
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:15px;font-weight:800;letter-spacing:0.06em;
+  text-transform:uppercase;transition:all 0.2s;
+}
+.btn-ghost{
+  padding:14px 16px;border-radius:11px;
+  border:1.5px solid var(--border);background:transparent;
+  color:var(--muted);font-size:13px;
+}
+.add-session{
+  width:100%;padding:13px;border-radius:11px;
+  border:1.5px dashed var(--border);
+  color:var(--muted);
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:14px;font-weight:700;letter-spacing:0.06em;
+  margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px;
+}
 
-#toast{position:fixed;bottom:calc(80px + var(--safe-bot));left:50%;transform:translateX(-50%) translateY(20px);background:#1a2a1a;border:1px solid #4a9a4a;color:#2a8a2a;padding:10px 20px;border-radius:100px;font-size:12px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;white-space:nowrap;z-index:300;}
+/* Rest / BJJ center blocks */
+.center-block{text-align:center;padding:48px 20px;}
+.cb-icon{font-size:52px;margin-bottom:14px;}
+.cb-title{
+  font-family:'Barlow Condensed',sans-serif;
+  font-size:24px;font-weight:800;letter-spacing:0.06em;
+}
+.cb-sub{font-size:13px;color:var(--muted);margin-top:6px;}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:calc(76px + var(--safe-bot));
+  left:50%;transform:translateX(-50%) translateY(16px);
+  background:#1c2e1c;border:1px solid #3a6a3a;color:#4a9a4a;
+  padding:10px 20px;border-radius:100px;
+  font-size:12px;font-weight:600;
+  opacity:0;transition:all 0.25s;
+  pointer-events:none;white-space:nowrap;z-index:300;
+}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
+
 <div id="scroll">
-  <div id="page-today"></div>
-  <div id="page-training" style="display:none"></div>
-  <div id="page-history" style="display:none"></div>
+  <div id="page-today" style="display:block"></div>
+  <div id="page-train" style="display:none"></div>
 </div>
-<div id="bottom-nav">
-  <button class="bn-tab active" data-page="today" onclick="setPage('today')"><div class="bn-icon">📊</div><div class="bn-label">Today</div><div class="bn-dot"></div></button>
-  <button class="bn-tab" data-page="training" onclick="setPage('training')"><div class="bn-icon">🏋️</div><div class="bn-label">Training</div><div class="bn-dot"></div></button>
-  <button class="bn-tab" data-page="history" onclick="setPage('history')"><div class="bn-icon">📋</div><div class="bn-label">History</div><div class="bn-dot"></div></button>
+
+<div id="nav">
+  <button class="nav-btn active" data-p="today" onclick="setPage('today')">
+    <div class="nav-icon">☀️</div>
+    <div class="nav-label">Today</div>
+    <div class="nav-line"></div>
+  </button>
+  <button class="nav-btn" data-p="train" onclick="setPage('train')">
+    <div class="nav-icon">🏋️</div>
+    <div class="nav-label">Train</div>
+    <div class="nav-line"></div>
+  </button>
 </div>
-<div id="modal-overlay" style="display:none" class="modal-overlay" onclick="closeModalOutside(event)">
-  <div class="modal-sheet"><div class="modal-handle"></div><div id="modal-content"></div></div>
-</div>
+
 <div id="toast"></div>
 
 <script>
-// ─── CONSTANTS ────────────────────────────────────────────────────────────
+// ─── DATA ─────────────────────────────────────────────────────────────────
+
+const DAYS_ORDER = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
+const TODAY_KEY  = ["SUN","MON","TUE","WED","THU","FRI","SAT"][new Date().getDay()];
+
+// Scheduled activity by day-of-week index (0=Sun)
+const SCHED_ACTIVITY = ["gym","bjj","gym","gym","rest","bjj","gymrun"];
+
+const ACTIVITY = {
+  gym:    {icon:"🏋️", label:"Gym",       color:"#C8390A", macros:{cal:2350,p:160,c:240,f:68}},
+  bjj:    {icon:"🥋",  label:"BJJ",       color:"#B8860B", macros:{cal:2300,p:160,c:225,f:68}},
+  bjjrun: {icon:"🥋🏃",label:"BJJ + Run", color:"#1A4FA8", macros:{cal:2400,p:158,c:255,f:68}},
+  gymrun: {icon:"🏋️🏃",label:"Gym + Run", color:"#1A7A48", macros:{cal:2400,p:158,c:255,f:68}},
+  rest:   {icon:"😴",  label:"Rest",      color:"#999",    macros:{cal:2050,p:155,c:175,f:72}},
+};
+
+const PLAN = {
+  MON:{label:"Monday",   short:"MON",color:"#B8860B",title:"Jiu-Jitsu",  type:"bjj"},
+  TUE:{label:"Tuesday",  short:"TUE",color:"#C8390A",title:"Upper Push", type:"gym"},
+  WED:{label:"Wednesday",short:"WED",color:"#1A4FA8",title:"Upper Pull", type:"gym"},
+  THU:{label:"Thursday", short:"THU",color:"#999",   title:"Rest Day",   type:"rest"},
+  FRI:{label:"Friday",   short:"FRI",color:"#B8860B",title:"Jiu-Jitsu",  type:"bjj"},
+  SAT:{label:"Saturday", short:"SAT",color:"#1A7A48",title:"Lower Body", type:"gym"},
+  SUN:{label:"Sunday",   short:"SUN",color:"#7B2FBE",title:"Chest Pump", type:"gym"},
+};
+
 const SESSION_TYPES = {
-  gym: {icon:"🏋️", name:"Gym",  color:"#C8390A"},
-  bjj: {icon:"🥋",  name:"BJJ",  color:"#B8860B"},
-  run: {icon:"🏃",  name:"Run",  color:"#0a7a8a"},
-  rest:{icon:"😴",  name:"Rest", color:"#999"},
+  gym: {icon:"🏋️",name:"Gym", color:"#C8390A"},
+  bjj: {icon:"🥋", name:"BJJ", color:"#B8860B"},
+  run: {icon:"🏃", name:"Run", color:"#0a7a8a"},
+  rest:{icon:"😴", name:"Rest",color:"#999"},
 };
-const INTENSITY_COLORS = {Easy:"#1A7A48", Moderate:"#B8860B", Hard:"#C8390A"};
-const MACRO_TARGETS = {
-  gym:{cal:2350,p:160,c:240,f:68,label:"Gym Day"},
-  bjj:{cal:2300,p:160,c:225,f:68,label:"BJJ Day"},
-  bjjrun:{cal:2400,p:158,c:255,f:68,label:"BJJ + Run"},
-  gymrun:{cal:2400,p:158,c:255,f:68,label:"Gym + Run"},
-  rest:{cal:2050,p:155,c:175,f:72,label:"Rest Day"},
-};
-const ACTIVITY_OPTIONS = [
-  {key:"gym",   icon:"🏋️", name:"Gym",      cal:"2,350 kcal",color:"#C8390A"},
-  {key:"bjj",   icon:"🥋",  name:"BJJ",      cal:"2,300 kcal",color:"#B8860B"},
-  {key:"bjjrun",icon:"🥋🏃",name:"BJJ+Run", cal:"2,400 kcal",color:"#1A4FA8"},
-  {key:"gymrun",icon:"🏋️🏃",name:"Gym+Run", cal:"2,400 kcal",color:"#1A7A48"},
-  {key:"rest",  icon:"😴",  name:"Rest",     cal:"2,050 kcal",color:"#999"},
-];
-
-// Scheduled activity per day of week (0=Sun…6=Sat)
-const SCHEDULED_ACTIVITY = ["gym","bjj","gym","gym","rest","bjj","gymrun"];
-// Sun=gym(chest pump), Mon=bjj, Tue=gym(push), Wed=gym(pull), Thu=rest, Fri=bjj, Sat=gymrun
-
-const PLAN_DEFAULTS = {
-  MON:{type:"bjj", label:"Monday",   short:"MON",color:"#B8860B",title:"Jiu-Jitsu",  subtitle:"Primary session"},
-  TUE:{type:"gym", label:"Tuesday",  short:"TUE",color:"#C8390A",title:"Upper Push",  subtitle:"Chest Focus"},
-  WED:{type:"gym", label:"Wednesday",short:"WED",color:"#1A4FA8",title:"Upper Pull",  subtitle:"Back + Biceps"},
-  THU:{type:"rest",label:"Thursday", short:"THU",color:"#999",   title:"Rest Day",    subtitle:"Recover & Grow"},
-  FRI:{type:"bjj", label:"Friday",   short:"FRI",color:"#B8860B",title:"Jiu-Jitsu",  subtitle:"Primary session"},
-  SAT:{type:"gym", label:"Saturday", short:"SAT",color:"#1A7A48",title:"Lower Body",  subtitle:"+ Abs"},
-  SUN:{type:"gym", label:"Sunday",   short:"SUN",color:"#7B2FBE",title:"Chest Pump",  subtitle:"+ Arms"},
-};
+const INTENSITY_COLORS = {Easy:"#1A7A48",Moderate:"#B8860B",Hard:"#C8390A"};
 
 const GYM_PLANS = {
-  TUE:{name:"Upper Push — Chest Focus", color:"#C8390A", exercises:[
-    {id:"flat-db",  name:"Flat DB Press",           sets:4,reps:"6–8",   w:55, u:"lbs",section:"Primary Compound",prog:"Add 2.5 lbs when top of range hit 2 sessions"},
-    {id:"incline-db",name:"Incline DB Press",        sets:3,reps:"8–10",  w:50, u:"lbs",prog:"Double progression"},
-    {id:"fly-low",  name:"Low-to-High Cable Fly",   sets:3,reps:"12–15", w:20, u:"lbs",section:"Isolation + Pump"},
-    {id:"w-dips",   name:"Weighted Dips",            sets:3,reps:"8–10",  w:0,  u:"lbs",note:"Forward lean = chest bias"},
-    {id:"ohce-tue", name:"Overhead Cable Extension", sets:3,reps:"12–15", w:25, u:"lbs"},
-    {id:"ab-wheel", name:"Ab Wheel Rollout",         sets:3,reps:"8–12",  w:0,  u:"",  section:"Abs",isAbs:true},
-    {id:"w-plank",  name:"Weighted Plank",           sets:2,reps:"45 sec",w:25, u:"lbs",isAbs:true},
+  TUE:{name:"Upper Push — Chest",color:"#C8390A",exercises:[
+    {id:"flat-db",   name:"Flat DB Press",           sets:4,reps:"6–8",   w:55, u:"lbs",section:"Compound",prog:"Add 2.5 lbs when top hit 2 sessions"},
+    {id:"incline-db",name:"Incline DB Press",         sets:3,reps:"8–10",  w:50, u:"lbs",prog:"Double progression"},
+    {id:"fly-low",   name:"Low-to-High Cable Fly",   sets:3,reps:"12–15", w:20, u:"lbs",section:"Pump"},
+    {id:"w-dips",    name:"Weighted Dips",            sets:3,reps:"8–10",  w:0,  u:"lbs",note:"Forward lean = chest bias"},
+    {id:"ohce-tue",  name:"Overhead Cable Extension", sets:3,reps:"12–15", w:25, u:"lbs"},
+    {id:"ab-wheel",  name:"Ab Wheel Rollout",         sets:3,reps:"8–12",  w:0,  u:"",  section:"Abs",isAbs:true,prog:"Knees → standing"},
+    {id:"w-plank",   name:"Weighted Plank",           sets:2,reps:"45 sec",w:25, u:"lbs",isAbs:true},
   ]},
-  WED:{name:"Upper Pull — Back + Biceps", color:"#1A4FA8", exercises:[
-    {id:"lat-pd",       name:"Lat Pulldown (neutral)",sets:4,reps:"8–10",  w:135,u:"lbs",section:"Primary Pull"},
+  WED:{name:"Upper Pull — Back",color:"#1A4FA8",exercises:[
+    {id:"lat-pd",       name:"Lat Pulldown (neutral)", sets:4,reps:"8–10",  w:135,u:"lbs",section:"Compound"},
     {id:"cs-row-wed",   name:"Chest-Supported Row",   sets:4,reps:"8–10",  w:100,u:"lbs",note:"3 sec eccentric"},
     {id:"hammer-wed",   name:"DB Hammer Curl",        sets:4,reps:"10–12", w:30, u:"lbs",section:"Arms"},
     {id:"incline-curl", name:"Incline DB Curl",       sets:3,reps:"8–10",  w:25, u:"lbs",note:"Long head stretch"},
@@ -262,518 +522,384 @@ const GYM_PLANS = {
     {id:"pallof",       name:"Pallof Press",          sets:3,reps:"12/side",w:40,u:"lbs",section:"Abs",isAbs:true},
     {id:"cable-crunch-w",name:"Cable Crunch",         sets:3,reps:"15",    w:40, u:"lbs",isAbs:true},
   ]},
-  SAT:{name:"Lower Body + Abs", color:"#1A7A48", exercises:[
-    {id:"tbdl",          name:"Trap Bar Deadlift",     sets:4,reps:"5",     w:140,u:"lbs",section:"Primary Compound",prog:"Add 5 lbs when all 4 sets clean"},
-    {id:"bss",           name:"Bulgarian Split Squat", sets:3,reps:"8/leg", w:0,  u:"lbs",note:"Add DBs when BW easy"},
-    {id:"hip-thrust",    name:"Hip Thrust",            sets:3,reps:"10–12", w:55, u:"lbs",section:"Accessory"},
-    {id:"ham-curl",      name:"Hamstring Curl",        sets:3,reps:"12–15", w:0,  u:"lbs",note:"Slow eccentric"},
-    {id:"hang-raise",    name:"Hanging Leg Raise",     sets:3,reps:"10–12", w:0,  u:"",  section:"Abs",isAbs:true},
-    {id:"cable-crunch-s",name:"Cable Crunch",          sets:3,reps:"15",    w:40, u:"lbs",isAbs:true},
-    {id:"lsit",          name:"L-Sit Hold (dip bars)", sets:3,reps:"15–20s",w:0,  u:"",  isAbs:true},
+  SAT:{name:"Lower Body + Abs",color:"#1A7A48",exercises:[
+    {id:"tbdl",          name:"Trap Bar Deadlift",    sets:4,reps:"5",     w:140,u:"lbs",section:"Compound",prog:"Add 5 lbs when all 4 sets clean"},
+    {id:"bss",           name:"Bulgarian Split Squat",sets:3,reps:"8/leg", w:0,  u:"lbs",note:"Add DBs when BW easy"},
+    {id:"hip-thrust",    name:"Hip Thrust",           sets:3,reps:"10–12", w:55, u:"lbs",section:"Accessory"},
+    {id:"ham-curl",      name:"Hamstring Curl",       sets:3,reps:"12–15", w:0,  u:"lbs",note:"Slow eccentric"},
+    {id:"hang-raise",    name:"Hanging Leg Raise",    sets:3,reps:"10–12", w:0,  u:"",  section:"Abs",isAbs:true},
+    {id:"cable-crunch-s",name:"Cable Crunch",         sets:3,reps:"15",    w:40, u:"lbs",isAbs:true},
+    {id:"lsit",          name:"L-Sit Hold (dip bars)",sets:3,reps:"15–20s",w:0,  u:"",  isAbs:true},
   ]},
-  SUN:{name:"Chest Pump + Arms", color:"#7B2FBE", exercises:[
-    {id:"mach-press",name:"Machine Chest Press",       sets:3,reps:"12–15", w:120,u:"lbs",section:"Chest Volume",note:"Squeeze hard"},
-    {id:"fly-mid",   name:"Cable Chest Fly (mid)",     sets:3,reps:"15",    w:20, u:"lbs",note:"2 sec hold"},
-    {id:"decline-pu",name:"Decline Push-Up",           sets:2,reps:"Failure",w:0, u:"",  note:"BW finisher"},
-    {id:"tri-pd",    name:"Triceps Rope Pushdown",     sets:3,reps:"12–15", w:50, u:"lbs",section:"Arms"},
-    {id:"hammer-sun",name:"DB Hammer Curl",            sets:3,reps:"12",    w:27.5,u:"lbs"},
-    {id:"ohce-sun",  name:"Overhead Cable Extension",  sets:2,reps:"15",    w:22.5,u:"lbs"},
+  SUN:{name:"Chest Pump + Arms",color:"#7B2FBE",exercises:[
+    {id:"mach-press",name:"Machine Chest Press",      sets:3,reps:"12–15", w:120,u:"lbs",section:"Chest",note:"Squeeze at peak"},
+    {id:"fly-mid",   name:"Cable Chest Fly (mid)",    sets:3,reps:"15",    w:20, u:"lbs",note:"2 sec hold"},
+    {id:"decline-pu",name:"Decline Push-Up",          sets:2,reps:"Failure",w:0, u:"",  note:"BW finisher"},
+    {id:"tri-pd",    name:"Triceps Rope Pushdown",    sets:3,reps:"12–15", w:50, u:"lbs",section:"Arms"},
+    {id:"hammer-sun",name:"DB Hammer Curl",           sets:3,reps:"12",    w:27.5,u:"lbs"},
+    {id:"ohce-sun",  name:"Overhead Cable Extension", sets:2,reps:"15",    w:22.5,u:"lbs"},
   ]},
 };
 
-const DAYS_ORDER = ["MON","TUE","WED","THU","FRI","SAT","SUN"];
-const TODAY_KEY = ["SUN","MON","TUE","WED","THU","FRI","SAT"][new Date().getDay()];
-const todayStr = () => new Date().toISOString().slice(0,10);
-
-// Default scheduled activity key for today
-function getScheduledActivity() {
-  const dow = new Date().getDay(); // 0=Sun
-  return SCHEDULED_ACTIVITY[dow] || "rest";
-}
-
 // ─── STATE ────────────────────────────────────────────────────────────────
-function ls(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
-function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+const ls  = (k,d)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}};
+const sv  = (k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));}catch{}};
+const tod = ()=>new Date().toISOString().slice(0,10);
 
-let currentPage = "today";
-let histTab = "nutrition";
-let pendingFood = null;
-let photoDataURL = null;
-let editingEx = null;
-let activeTrainingDay = TODAY_KEY;
+let page        = "today";
+let histOpen    = true;
+let trainDay    = TODAY_KEY;
+let editingEx   = null;
 
-// Today's activity: read from storage keyed by date, default = scheduled
-let todayActivity = ls("activity_"+todayStr(), null);
-if(!todayActivity) { todayActivity = getScheduledActivity(); }
+let todayAct    = ls("act_"+tod(), null);
+if(!todayAct) todayAct = SCHED_ACTIVITY[new Date().getDay()] || "rest";
 
-let foodLog = ls("food_"+todayStr(), []);
-let weights = ls("w_v1", {});
-let doneSets = ls("s_v1", {});
-let sessionLog = ls("session_log_v1", []);
+let weights     = ls("w_v1", {});
+let doneSets    = ls("s_v1", {});
+let sessions    = ls("sess_v3", {});
+let sessionLog  = ls("slog_v1", []);
 
-// daySessions[dk] = [{type, data, gymPlanKey}]
-let daySessions = ls("day_sessions_v2", {});
+function getScheduled(){ return SCHED_ACTIVITY[new Date().getDay()] || "rest"; }
 
-function getDaySessions(dk) {
-  if (!daySessions[dk]) {
-    daySessions[dk] = [{type: PLAN_DEFAULTS[dk].type, data: {}, gymPlanKey: dk}];
-    sv("day_sessions_v2", daySessions);
-  }
-  return daySessions[dk];
+function getDaySessions(dk){
+  if(!sessions[dk]) sessions[dk] = [{type:PLAN[dk].type, data:{}, gymKey:dk}];
+  return sessions[dk];
 }
-function saveDaySessions(dk, sessions) {
-  daySessions[dk] = sessions;
-  sv("day_sessions_v2", daySessions);
-}
+function saveSessions(dk,arr){ sessions[dk]=arr; sv("sess_v3",sessions); }
 
 // ─── NAVIGATION ───────────────────────────────────────────────────────────
-function setPage(p) {
-  currentPage = p;
-  ["today","training","history"].forEach(n => {
-    document.getElementById("page-"+n).style.display = n===p ? "block" : "none";
-    document.querySelector(`[data-page="${n}"]`).classList.toggle("active", n===p);
-  });
+function setPage(p){
+  page = p;
+  document.getElementById("page-today").style.display = p==="today"?"block":"none";
+  document.getElementById("page-train").style.display = p==="train"?"block":"none";
+  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.p===p));
   if(p==="today") renderToday();
-  if(p==="training") renderTraining();
-  if(p==="history") renderHistory();
+  if(p==="train") renderTrain();
 }
 
 // ─── TODAY PAGE ───────────────────────────────────────────────────────────
-function renderToday() {
+function renderToday(){
   const wrap = document.getElementById("page-today");
-  const scheduled = getScheduledActivity();
-  const targets = MACRO_TARGETS[todayActivity] || MACRO_TARGETS.gym;
-  const totals = foodLog.reduce((a,f)=>({cal:a.cal+f.cal,p:a.p+f.p,c:a.c+f.c,f:a.f+f.f}),{cal:0,p:0,c:0,f:0});
-  const pct = (v,t) => Math.min(100, Math.round(v/t*100));
-  const isOver = (v,t) => v > t*1.05;
+  const scheduled = getScheduled();
+  const act = ACTIVITY[todayAct] || ACTIVITY.rest;
+  const m = act.macros;
+  const isOverride = todayAct !== scheduled;
+  const schedAct = ACTIVITY[scheduled];
+  const now = new Date();
+  const dateStr = now.toLocaleDateString("en-CA",{weekday:"long",month:"long",day:"numeric"});
 
-  let html = `<div class="page-header">
-    <div class="ph-label">Plan 04 — ${new Date().toLocaleDateString("en-CA")}</div>
-    <div class="ph-title">Today</div>
-  </div><div class="today-wrap">
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);padding:0 0 8px;margin-bottom:10px;border-bottom:1px solid var(--border2)">Today's Activity</div>
-  <div class="activity-grid">`;
+  let html = `<div class="today-page">`;
 
-  ACTIVITY_OPTIONS.forEach(a => {
-    const active = todayActivity === a.key;
-    const isScheduled = scheduled === a.key;
-    html += `<button class="act-btn${active?" active":""}${isScheduled?" scheduled":""}" style="--act-color:${a.color}" onclick="setActivity('${a.key}')">
-      <div class="act-icon">${a.icon}</div>
-      <span class="act-name" style="${active?`color:${a.color}`:""}">${a.name}</span>
-      <div class="act-cal">${a.cal}</div>
+  // Hero
+  html += `<div class="hero">
+    <div class="hero-top">
+      <div class="hero-date">${dateStr}</div>
+      <div class="hero-day-badge">${PLAN[TODAY_KEY]?.title || "Today"}</div>
+    </div>
+    <div class="hero-title">${act.label.toUpperCase()}</div>
+    <div class="hero-subtitle">${isOverride ? `Override · Scheduled: ${schedAct?.label}` : "Scheduled for today"}</div>
+    <div class="activity-pills">`;
+
+  Object.entries(ACTIVITY).forEach(([key,a])=>{
+    const isActive = todayAct === key;
+    const isSched  = scheduled === key;
+    // darken active color slightly for contrast on dark bg
+    const col = a.color;
+    html += `<button class="ap${isActive?" active":""}${isSched?" scheduled-indicator":""}"
+      style="--ap-col:${col}"
+      onclick="setAct('${key}')">
+      ${a.icon} ${a.label}
     </button>`;
   });
 
-  html += `</div>
-  ${todayActivity !== scheduled ? `<div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;font-style:italic">Scheduled: ${MACRO_TARGETS[scheduled]?.label||scheduled} — overridden for today</div>` : ""}
-  <div class="macro-targets">
-    <div class="mt-header">
-      <div class="mt-label">${targets.label} — Daily Target</div>
-      <div class="mt-cal">${targets.cal}<span> kcal</span></div>
-    </div>
-    <div class="mt-macros">
-      <div class="mt-macro"><div class="mt-macro-val" style="color:#e87050">${targets.p}<span class="mt-macro-g">g</span></div><div class="mt-macro-lbl" style="color:#e87050">Protein</div></div>
-      <div class="mt-macro"><div class="mt-macro-val" style="color:#5a90e8">${targets.c}<span class="mt-macro-g">g</span></div><div class="mt-macro-lbl" style="color:#5a90e8">Carbs</div></div>
-      <div class="mt-macro"><div class="mt-macro-val" style="color:#5ac888">${targets.f}<span class="mt-macro-g">g</span></div><div class="mt-macro-lbl" style="color:#5ac888">Fat</div></div>
-    </div>
-  </div>
-  <div class="tracker-card">`;
+  html += `</div></div>`;
 
-  [{name:"Calories",val:totals.cal,target:targets.cal,unit:"kcal",color:"#333"},
-   {name:"Protein", val:totals.p,  target:targets.p,  unit:"g",  color:"#C8390A"},
-   {name:"Carbs",   val:totals.c,  target:targets.c,  unit:"g",  color:"#1A4FA8"},
-   {name:"Fat",     val:totals.f,  target:targets.f,  unit:"g",  color:"#1A7A48"}
-  ].forEach(b => {
-    const p = pct(b.val,b.target); const ov = isOver(b.val,b.target);
-    html += `<div class="tracker-row">
-      <div class="tr-head"><div class="tr-name">${b.name}</div><div class="tr-vals">${Math.round(b.val)} / ${b.target} ${b.unit}</div></div>
-      <div class="tr-bar"><div class="tr-fill" style="width:${p}%;background:${ov?"#e03030":b.color}"></div></div>
-    </div>`;
-  });
-
-  html += `</div>
-  <div class="food-log-header">
-    <div class="food-log-title">Food Log (${foodLog.length})</div>
-    <button class="add-food-btn" onclick="openFoodModal()">📷 Add Food</button>
+  // Macros
+  html += `<div class="macro-section">
+    <div class="macro-grid">
+      <div class="macro-card full" style="border-left:3px solid #333">
+        <div>
+          <div class="mc-label" style="color:#888">Calories</div>
+          <div class="mc-note">Daily target</div>
+        </div>
+        <div class="mc-val">${m.cal}<span class="mc-unit">kcal</span></div>
+      </div>
+      <div class="macro-card" style="border-left:3px solid var(--protein)">
+        <div class="mc-label" style="color:var(--protein)">Protein</div>
+        <div class="mc-val" style="color:var(--protein)">${m.p}<span class="mc-unit">g</span></div>
+        <div class="mc-note">2.2g / kg</div>
+      </div>
+      <div class="macro-card" style="border-left:3px solid var(--carbs)">
+        <div class="mc-label" style="color:var(--carbs)">Carbs</div>
+        <div class="mc-val" style="color:var(--carbs)">${m.c}<span class="mc-unit">g</span></div>
+        <div class="mc-note">Training fuel</div>
+      </div>
+      <div class="macro-card full" style="border-left:3px solid var(--fat)">
+        <div>
+          <div class="mc-label" style="color:var(--fat)">Fat</div>
+          <div class="mc-note">Hormones & recovery</div>
+        </div>
+        <div class="mc-val" style="color:var(--fat)">${m.f}<span class="mc-unit">g</span></div>
+      </div>
+    </div>
   </div>`;
 
-  if (!foodLog.length) {
-    html += `<div class="food-empty"><div style="font-size:32px">🍽️</div><div style="font-size:13px;margin-top:8px;color:var(--muted)">No food logged yet.<br>Tap Add Food to take a photo.</div></div>`;
+  // History
+  const sLog = ls("slog_v1",[]);
+
+  html += `<div class="history-section">
+    <div class="hs-header" onclick="toggleHist()">
+      <div class="hs-title">Session History</div>
+      <div class="hs-toggle${histOpen?" open":""}" id="hist-toggle">⌄</div>
+    </div>
+    <div id="hist-body" style="display:${histOpen?"block":"none"}">`;
+
+  if(!sLog.length){
+    html+=`<div class="hist-empty">No sessions logged yet.<br>Finish a session in Train to log it.</div>`;
   } else {
-    html += `<div class="card"><div class="card-pad">`;
-    foodLog.forEach((f,i) => {
-      html += `<div class="food-entry">
-        ${f.photo ? `<img class="fe-thumb" src="${f.photo}">` : `<div class="fe-thumb-ph">🍽️</div>`}
-        <div class="fe-info">
-          <div class="fe-name">${f.name}</div>
-          <div class="fe-portion">${f.portion}</div>
-          <div class="fe-macros">
-            <span class="fe-macro cal">${f.cal} kcal</span>
-            <span class="fe-macro p">P ${f.p}g</span>
-            <span class="fe-macro c">C ${f.c}g</span>
-            <span class="fe-macro f">F ${f.f}g</span>
+    sLog.forEach(e=>{
+      const typeIcon = e.type==="rest"?"😴":e.type==="bjj"?"🥋":e.type==="run"?"🏃":"🏋️";
+      html+=`<div class="hist-entry" style="--ec:${e.color||"#888"}">
+        <div class="he-top">
+          <div>
+            <div class="he-title">${typeIcon} ${e.title}</div>
+            <div class="he-date">${e.date}</div>
           </div>
         </div>
-        <button class="fe-del" onclick="deleteFood(${i})">×</button>
+        ${e.summary?`<div class="he-summary">${e.summary}</div>`:""}
+        <div class="he-rows">
+          ${(e.exercises||[]).map(x=>`<div class="he-row"><span>${x.name}</span><span>${x.sets}x ${x.w>0?x.w+" "+x.u:"BW"}</span></div>`).join("")}
+        </div>
       </div>`;
     });
-    html += `</div></div>`;
-
-    const rem = {cal:targets.cal-totals.cal, p:targets.p-totals.p, c:targets.c-totals.c, f:targets.f-totals.f};
-    html += `<div class="card"><div class="card-pad">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;margin-bottom:10px;">📊 Remaining Today</div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;">
-        ${["cal","p","c","f"].map(k=>`<div style="padding:8px 4px;background:var(--surface);border-radius:8px;border:1px solid var(--border)">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:${rem[k]<-50?"#e03030":"var(--ink)"}">${rem[k]>=0?"+":""}${Math.round(rem[k])}</div>
-          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;font-weight:700">${k==="cal"?"kcal":k}</div>
-        </div>`).join("")}
-      </div>
-      <button onclick="saveDay()" style="width:100%;margin-top:12px;padding:13px;border-radius:10px;border:none;background:var(--ink);color:#f5f2ed;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;">Save Day to History</button>
-    </div></div>`;
+    html+=`<button onclick="if(confirm('Clear history?')){sv('slog_v1',[]);sessionLog=[];renderToday();}" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e0c8c8;color:#993333;font-size:12px;margin-top:4px;">Clear History</button>`;
   }
 
-  html += `</div>`;
+  html+=`</div></div></div>`;
   wrap.innerHTML = html;
 }
 
-function setActivity(key) {
-  todayActivity = key;
-  sv("activity_"+todayStr(), key);
+function setAct(key){
+  todayAct = key;
+  sv("act_"+tod(), key);
+  renderToday();
+}
+function toggleHist(){
+  histOpen = !histOpen;
   renderToday();
 }
 
-function deleteFood(i) {
-  foodLog.splice(i,1);
-  sv("food_"+todayStr(), foodLog);
-  renderToday();
-}
 
-function saveDay() {
-  const targets = MACRO_TARGETS[todayActivity] || MACRO_TARGETS.gym;
-  const totals = foodLog.reduce((a,f)=>({cal:a.cal+f.cal,p:a.p+f.p,c:a.c+f.c,f:a.f+f.f}),{cal:0,p:0,c:0,f:0});
-  const entry = {date:todayStr(), activity:todayActivity, activityLabel:targets.label, targets, totals, items:foodLog.length, color:ACTIVITY_OPTIONS.find(a=>a.key===todayActivity)?.color||"#888"};
-  const existing = ls("nutrition_log_v1",[]);
-  sv("nutrition_log_v1", [entry,...existing.filter(e=>e.date!==todayStr())].slice(0,60));
-  showToast("Day saved!");
-}
 
-// ─── FOOD MODAL ───────────────────────────────────────────────────────────
-function openFoodModal() { pendingFood=null; photoDataURL=null; document.getElementById("modal-overlay").style.display="flex"; renderModalUpload(); }
-function closeModal() { document.getElementById("modal-overlay").style.display="none"; pendingFood=null; photoDataURL=null; }
-function closeModalOutside(e) { if(e.target===document.getElementById("modal-overlay")) closeModal(); }
-function renderModalUpload() {
-  document.getElementById("modal-content").innerHTML=`
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-title">Log Food</div>
-    <div class="upload-area">
-      <input type="file" accept="image/*" capture="environment" onchange="handlePhoto(event)">
-      <div style="font-size:40px;margin-bottom:8px">📷</div>
-      <div style="font-size:14px;font-weight:600">Take a photo or upload</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">Point camera at your meal</div>
-    </div>
-    <button class="analyze-btn" disabled>Analyze Food</button>`;
-}
-function handlePhoto(e) {
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    photoDataURL = ev.target.result;
-    document.getElementById("modal-content").innerHTML=`
-      <button class="modal-close" onclick="closeModal()">×</button>
-      <div class="modal-title">Log Food</div>
-      <img src="${photoDataURL}" class="preview-img">
-      <button class="analyze-btn" onclick="analyzePhoto()">Analyze with AI</button>`;
-  };
-  reader.readAsDataURL(file);
-}
-async function analyzePhoto() {
-  if(!photoDataURL) return;
-  document.getElementById("modal-content").innerHTML=`<div class="analyzing-state"><div class="analyzing-spinner">⏳</div><div style="font-size:14px;color:var(--muted);margin-top:8px">Analyzing your food…</div></div>`;
-  const base64 = photoDataURL.split(",")[1];
-  const mediaType = photoDataURL.split(";")[0].split(":")[1];
-  try {
-    const resp = await fetch("https://plan04-api.vercel.app/api/analyze", {
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({image:base64, mediaType})
-    });
-    const data = await resp.json();
-    if(data.error) throw new Error(data.error);
-    pendingFood = data;
-    pendingFood.photo = photoDataURL;
-    renderModalResult();
-  } catch(err) {
-    document.getElementById("modal-content").innerHTML=`
-      <button class="modal-close" onclick="closeModal()">×</button>
-      <div class="modal-title">Failed</div>
-      <p style="color:var(--muted);font-size:13px;margin-bottom:16px">Could not analyze. Try again.</p>
-      <button class="retry-btn" onclick="renderModalUpload()">Try Again</button>`;
-  }
-}
-function renderModalResult() {
-  const f = pendingFood;
-  document.getElementById("modal-content").innerHTML=`
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <div class="modal-title">Analysis Result</div>
-    ${photoDataURL?`<img src="${photoDataURL}" class="preview-img">`:""}
-    <div class="result-card">
-      <div class="result-name">${f.name}</div>
-      <div class="result-portion">${f.portion}</div>
-      <div class="result-macros">
-        <div class="rm cal"><div class="rm-val">${f.cal}</div><div class="rm-lbl">kcal</div></div>
-        <div class="rm p"><div class="rm-val">${f.p}g</div><div class="rm-lbl">protein</div></div>
-        <div class="rm c"><div class="rm-val">${f.c}g</div><div class="rm-lbl">carbs</div></div>
-        <div class="rm f"><div class="rm-val">${f.f}g</div><div class="rm-lbl">fat</div></div>
-      </div>
-    </div>
-    <button class="confirm-btn" onclick="confirmFood()">✓ Add to Log</button>
-    <button class="retry-btn" onclick="openFoodModal()">Retake Photo</button>`;
-}
-function confirmFood() {
-  if(!pendingFood) return;
-  foodLog.push(pendingFood);
-  sv("food_"+todayStr(), foodLog);
-  closeModal();
-  renderToday();
-  showToast("Food logged!");
-}
+// ─── TRAIN PAGE ───────────────────────────────────────────────────────────
+function renderTrain(){
+  const wrap = document.getElementById("page-train");
+  const def = PLAN[trainDay];
+  const daysess = getDaySessions(trainDay);
 
-// ─── TRAINING PAGE ────────────────────────────────────────────────────────
-function renderTraining() {
-  const wrap = document.getElementById("page-training");
-  const def = PLAN_DEFAULTS[activeTrainingDay];
-  const sessions = getDaySessions(activeTrainingDay);
+  let html = `<div class="train-page">
+  <div class="day-strip-wrap">
+    <div class="day-strip">`;
 
-  let html = `<div class="page-header"><div class="ph-label">Plan 04</div><div class="ph-title">Training</div></div>
-  <div class="training-wrap">
-  <div class="day-strip">`;
-  DAYS_ORDER.forEach(dk => {
-    const d = PLAN_DEFAULTS[dk];
-    const isToday = dk === TODAY_KEY;
-    const isActive = dk === activeTrainingDay;
-    html += `<button class="ds-btn${isActive?" active":""}" style="--day-color:${d.color}" onclick="setTrainingDay('${dk}')">
-      ${d.short}${isToday?`<span class="ds-today-dot" style="background:${d.color}"></span>`:""}
+  DAYS_ORDER.forEach(dk=>{
+    const d=PLAN[dk];
+    const isActive=dk===trainDay;
+    const isToday=dk===TODAY_KEY;
+    html+=`<button class="ds${isActive?" active":""}" style="--dc:${d.color}" onclick="setDay('${dk}')">
+      ${d.short}
+      ${isToday?`<span class="ds-dot" style="background:${d.color}"></span>`:""}
     </button>`;
   });
-  html += `</div>`;
 
-  // Planned label
-  html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;color:var(--muted)">
-      Scheduled: <span style="color:${def.color}">${def.title}</span>
+  html+=`</div></div>`;
+
+  // Day header
+  const prog = overallDayProgress(trainDay, daysess);
+  const circ = 2*Math.PI*20;
+  const offset = circ*(1-prog);
+
+  html+=`<div class="day-header">
+    <div class="dh-left">
+      <div class="dh-planned" style="color:${def.color}">${def.label}</div>
+      <div class="dh-title">${def.title}</div>
     </div>
-    <div style="font-size:11px;color:var(--muted)">${def.label}</div>
+    <div class="ring-wrap">
+      <svg width="48" height="48" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="${def.color}20" stroke-width="4"/>
+        <circle cx="24" cy="24" r="20" fill="none" stroke="${def.color}" stroke-width="4"
+          stroke-linecap="round"
+          stroke-dasharray="${circ.toFixed(1)}"
+          stroke-dashoffset="${offset.toFixed(1)}"/>
+      </svg>
+      <div class="ring-inner" style="color:${def.color}">${Math.round(prog*100)}%</div>
+    </div>
   </div>`;
 
-  // Render sessions
-  sessions.forEach((sess, si) => {
-    html += renderSessionCard(sess, si, sessions.length, activeTrainingDay);
+  // Sessions
+  daysess.forEach((sess,si)=>{
+    html += buildSessionCard(sess, si, daysess.length, trainDay);
   });
 
-  // Add second session (max 2, only bjj/run/gym options)
-  if (sessions.length < 2) {
-    html += `<button class="add-session-btn" onclick="addSession()">＋ Add Second Session</button>`;
+  if(daysess.length < 2){
+    html+=`<button class="add-session" onclick="addSession()">＋ Add Second Session</button>`;
   }
 
-  html += `</div>`;
+  html+=`</div>`;
   wrap.innerHTML = html;
-  if (editingEx) { const inp = document.getElementById("wi-"+editingEx); if(inp){inp.focus();inp.select();} }
+  if(editingEx){ const inp=document.getElementById("wi-"+editingEx); if(inp){inp.focus();inp.select();} }
 }
 
-function renderSessionCard(sess, si, total, dk) {
-  const st = SESSION_TYPES[sess.type] || SESSION_TYPES.rest;
+function buildSessionCard(sess, si, total, dk){
+  const st = SESSION_TYPES[sess.type]||SESSION_TYPES.rest;
   const col = st.color;
-  const isFirst = si === 0;
-
-  // For second session: only gym/bjj/run
-  const availableTypes = isFirst
-    ? Object.keys(SESSION_TYPES)
-    : ["gym","bjj","run"];
+  const isFirst = si===0;
+  const availTypes = isFirst ? Object.keys(SESSION_TYPES) : ["gym","bjj","run"];
 
   let html = `<div class="session-card">
-    <div class="sc-topbar" style="background:${col}"></div>
-    <div class="sc-header">
-      <div class="sc-title-wrap">
+    <div class="sc-top" style="background:${col}"></div>
+    <div class="sc-head">
+      <div class="sc-head-left">
         <div class="sc-icon">${st.icon}</div>
         <div>
           <div class="sc-title">${st.name}</div>
-          <div class="sc-sub">${isFirst?"Primary session":"Second session"}</div>
+          <div class="sc-sub">${isFirst?"Primary":"Second session"}</div>
         </div>
       </div>
-      ${!isFirst ? `<button onclick="removeSession(${si})" style="background:none;border:none;color:var(--muted);font-size:22px;padding:4px;line-height:1">×</button>` : ""}
+      ${!isFirst?`<button class="sc-remove" onclick="removeSession(${si})">×</button>`:""}
     </div>
-    <div class="sc-body">`;
+    <div class="sc-body">
+      <div class="type-grid">`;
 
-  // Type picker
-  html += `<div style="margin-bottom:14px">
-    <div class="input-label">Session Type</div>
-    <div class="stype-grid" style="grid-template-columns:repeat(${availableTypes.length},1fr)">`;
-  availableTypes.forEach(key => {
-    const s = SESSION_TYPES[key];
-    const active = sess.type === key;
-    html += `<button class="stype-btn${active?" active":""}" style="--st-color:${s.color}" onclick="changeSessionType(${si},'${key}')">
-      <div class="stype-icon">${s.icon}</div>
-      <div class="stype-name" style="${active?`color:${s.color}`:""}">${s.name}</div>
+  availTypes.forEach(key=>{
+    const s=SESSION_TYPES[key];
+    const active=sess.type===key;
+    html+=`<button class="tg-btn${active?" active":""}" style="--tc:${s.color}" onclick="changeType(${si},'${key}')">
+      <div class="tg-icon">${s.icon}</div>
+      <div class="tg-name" style="${active?`color:${s.color}`:""}">${s.name}</div>
     </button>`;
   });
-  html += `</div></div>`;
+  html+=`</div>`;
 
-  // Body by type
-  if (sess.type === "run") {
-    html += renderRunFields(sess, si, col);
-  } else if (sess.type === "bjj") {
-    html += renderBJJFields(sess, si, col);
-  } else if (sess.type === "gym") {
-    html += renderGymFields(sess, si, dk, col, isFirst);
-  } else {
-    html += `<div style="text-align:center;padding:20px;color:var(--muted)"><div style="font-size:36px">😴</div><div style="font-size:13px;margin-top:8px">Rest day — recover well</div></div>`;
-  }
+  if(sess.type==="run")  html += buildRunFields(sess,si,col);
+  else if(sess.type==="bjj")  html += buildBJJFields(sess,si,col);
+  else if(sess.type==="gym")  html += buildGymFields(sess,si,dk,col,isFirst);
+  else html+=`<div class="center-block"><div class="cb-icon">😴</div><div class="cb-title" style="color:var(--muted)">Rest Day</div><div class="cb-sub">Recovery is part of the plan.</div><button class="btn-primary" style="background:#999;color:#fff;margin-top:20px;padding:14px 32px;border-radius:11px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.06em;" onclick="saveLog(${si})">Log Rest Day</button></div>`;
 
-  html += `</div></div>`;
+  html+=`</div></div>`;
   return html;
 }
 
-function renderRunFields(sess, si, col) {
-  const d = sess.data || {};
-  const pace = calcPace(d.distKm, d.timeMin);
+function buildRunFields(sess,si,col){
+  const d=sess.data||{};
+  const pace=calcPace(d.km,d.min);
   return `
-    <div class="input-group">
+    <div class="f-row">
       <div>
-        <label class="input-label">Distance (km)</label>
-        <input class="input-field" type="number" inputmode="decimal" placeholder="5.0"
-          value="${d.distKm||""}"
-          oninput="updateSD(${si},'distKm',this.value);liveUpdatePace(${si})"
-          style="--focus-color:${col}">
+        <label class="f-label">Distance (km)</label>
+        <input class="f-input" type="number" inputmode="decimal" placeholder="5.0"
+          value="${d.km||""}" oninput="upd(${si},'km',this.value);livePace(${si})"
+          style="--fc:${col}">
       </div>
       <div>
-        <label class="input-label">Time (min)</label>
-        <input class="input-field" type="number" inputmode="numeric" placeholder="28"
-          value="${d.timeMin||""}"
-          oninput="updateSD(${si},'timeMin',this.value);liveUpdatePace(${si})"
-          style="--focus-color:${col}">
+        <label class="f-label">Time (min)</label>
+        <input class="f-input" type="number" inputmode="numeric" placeholder="28"
+          value="${d.min||""}" oninput="upd(${si},'min',this.value);livePace(${si})"
+          style="--fc:${col}">
       </div>
     </div>
-    <div class="pace-display" id="pace-${si}" style="opacity:${pace?1:0.35}">
+    <div class="pace-card" id="pace-${si}" style="opacity:${pace?1:0.3}">
       <div>
-        <div class="pd-label">Avg Pace</div>
-        <div style="font-size:11px;color:#666;margin-top:2px">${d.distKm&&d.timeMin?"Calculated":"Enter distance + time"}</div>
+        <div class="pace-label">Avg Pace</div>
+        <div class="pace-hint">${d.km&&d.min?"Calculated":"Enter distance + time"}</div>
       </div>
       <div style="text-align:right">
-        <div class="pd-val" id="pace-val-${si}">${pace||"—"}</div>
-        <div class="pd-unit">min / km</div>
+        <div class="pace-val" id="pv-${si}">${pace||"—"}</div>
+        <div class="pace-unit">min / km</div>
       </div>
     </div>
-    <label class="input-label">Notes</label>
-    <input class="input-field" type="text" placeholder="Route, how you felt…"
-      value="${d.notes||""}" oninput="updateSD(${si},'notes',this.value)"
-      style="--focus-color:${col}">
-    <button class="save-btn" style="background:${col};color:#fff" onclick="saveSessionLog(${si})">Save Run</button>`;
+    <label class="f-label">Notes</label>
+    <input class="f-input" type="text" placeholder="Route, how you felt…"
+      value="${d.notes||""}" oninput="upd(${si},'notes',this.value)" style="--fc:${col}">
+    <button class="btn-primary" style="background:${col};color:#fff;width:100%" onclick="saveLog(${si})">Save Run</button>`;
 }
 
-function renderBJJFields(sess, si, col) {
-  const d = sess.data || {};
-  const intensity = d.intensity || "Moderate";
+function buildBJJFields(sess,si,col){
+  const d=sess.data||{};
+  const intens=d.intensity||"Moderate";
   return `
-    <label class="input-label">Duration (minutes)</label>
-    <input class="input-field" type="number" inputmode="numeric" placeholder="90"
-      value="${d.duration||""}" oninput="updateSD(${si},'duration',this.value)"
-      style="--focus-color:${col}">
-    <label class="input-label">Intensity</label>
-    <div class="intensity-row">
-      ${["Easy","Moderate","Hard"].map(lv=>`<button class="int-btn${intensity===lv?" active":""}"
-        style="${intensity===lv?`background:${INTENSITY_COLORS[lv]};border-color:${INTENSITY_COLORS[lv]}`:""}"
-        onclick="updateSD(${si},'intensity','${lv}');renderTraining()">${lv}</button>`).join("")}
+    <label class="f-label">Duration (minutes)</label>
+    <input class="f-input" type="number" inputmode="numeric" placeholder="90"
+      value="${d.duration||""}" oninput="upd(${si},'duration',this.value)"
+      style="--fc:${col}">
+    <label class="f-label">Intensity</label>
+    <div class="intensity-btns">
+      ${["Easy","Moderate","Hard"].map(lv=>`<button class="int-btn${intens===lv?" active":""}"
+        style="${intens===lv?`background:${INTENSITY_COLORS[lv]};border-color:${INTENSITY_COLORS[lv]}`:""}"
+        onclick="upd(${si},'intensity','${lv}');renderTrain()">${lv}</button>`).join("")}
     </div>
-    <label class="input-label">Notes</label>
-    <input class="input-field" type="text" placeholder="Techniques worked, sparring…"
-      value="${d.notes||""}" oninput="updateSD(${si},'notes',this.value)"
-      style="--focus-color:${col}">
-    <button class="save-btn" style="background:${col};color:#fff" onclick="saveSessionLog(${si})">Save BJJ Session</button>`;
+    <label class="f-label">Notes</label>
+    <input class="f-input" type="text" placeholder="Techniques, sparring…"
+      value="${d.notes||""}" oninput="upd(${si},'notes',this.value)" style="--fc:${col}">
+    <button class="btn-primary" style="background:${col};color:#fff;width:100%" onclick="saveLog(${si})">Save BJJ Session</button>`;
 }
 
-function renderGymFields(sess, si, dk, col, isFirst) {
-  // For the first session, use the day's plan. For second session, let user pick which plan.
-  const gymPlanKey = sess.gymPlanKey || dk;
-  const plan = GYM_PLANS[gymPlanKey];
+function buildGymFields(sess,si,dk,col,isFirst){
+  const gymKey = sess.gymKey||dk;
+  const plan = GYM_PLANS[gymKey];
 
-  let html = "";
-
-  // Plan selector for second sessions (or if no plan for this day)
-  if (!isFirst || !GYM_PLANS[dk]) {
-    html += `<label class="input-label">Which training day plan?</label>
-    <select class="gym-plan-select" onchange="changeGymPlan(${si},this.value)" style="--focus-color:${col}">`;
-    Object.entries(GYM_PLANS).forEach(([key,p]) => {
-      html += `<option value="${key}" ${gymPlanKey===key?"selected":""}>${p.name}</option>`;
+  let html="";
+  if(!isFirst||!GYM_PLANS[dk]){
+    html+=`<label class="f-label">Training Plan</label>
+    <select class="plan-select" onchange="changeGymKey(${si},this.value)">`;
+    Object.entries(GYM_PLANS).forEach(([k,p])=>{
+      html+=`<option value="${k}" ${gymKey===k?"selected":""}>${p.name}</option>`;
     });
-    html += `</select>`;
+    html+=`</select>`;
   }
+  if(!plan) return html+`<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">Select a plan above</div>`;
 
-  if (!plan) {
-    html += `<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">No plan for this day.<br>Select a plan above.</div>`;
-    return html;
-  }
+  const planCol=plan.color;
+  const prog=gymProg(gymKey,plan.exercises);
 
-  // Progress
-  const exercises = plan.exercises;
-  const prog = gymProgress(gymPlanKey, exercises);
-  const circ = 2*Math.PI*20;
-  const offset = circ*(1-prog);
-  const planCol = plan.color;
-
-  html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-    <div style="font-size:12px;font-weight:600;color:var(--muted)">${plan.name}</div>
-    <div class="ring-wrap">
-      <svg width="50" height="50" viewBox="0 0 50 50" style="transform:rotate(-90deg)">
-        <circle cx="25" cy="25" r="20" fill="none" stroke="#e8e4dc" stroke-width="4"/>
-        <circle cx="25" cy="25" r="20" fill="none" stroke="${planCol}" stroke-width="4"
-          stroke-linecap="round" stroke-dasharray="${circ.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"/>
-      </svg>
-      <div class="ring-inner" style="color:${planCol}">${Math.round(prog*100)}%</div>
-    </div>
-  </div>`;
-
-  let lastSec = null;
-  exercises.forEach(ex => {
-    if (ex.section && ex.section !== lastSec) {
-      lastSec = ex.section;
-      html += `<div class="section-head-train ${ex.isAbs?"abs-h":"norm-h"}">${ex.section}</div>`;
+  let lastSec=null;
+  plan.exercises.forEach(ex=>{
+    if(ex.section&&ex.section!==lastSec){
+      lastSec=ex.section;
+      html+=`<div class="ex-section ${ex.isAbs?"abs-s":"norm-s"}">${ex.section}</div>`;
     }
-    const w = getW(ex.id, ex.w ?? 0);
-    const isAbs = ex.isAbs;
-    const pCol = isAbs ? "#7B2FBE" : planCol;
-
-    let wHTML = "";
-    if (ex.u) {
-      if (editingEx === ex.id) {
-        wHTML = `<div style="display:flex;gap:4px;align-items:center">
-          <input class="weight-input" id="wi-${ex.id}" type="number" inputmode="decimal" value="${w}"
-            onkeydown="if(event.key==='Enter')commitWeight('${ex.id}')"
-            onblur="commitWeight('${ex.id}')" style="border-color:${pCol}">
-          <span style="font-size:10px;color:var(--muted)">${ex.u}</span>
+    const w=getW(ex.id,ex.w??0);
+    const pCol=ex.isAbs?"#7B2FBE":planCol;
+    let wHTML="";
+    if(ex.u){
+      if(editingEx===ex.id){
+        wHTML=`<div style="display:flex;gap:4px;align-items:center">
+          <input class="w-input" id="wi-${ex.id}" type="number" inputmode="decimal" value="${w}"
+            onkeydown="if(event.key==='Enter')commitW('${ex.id}')"
+            onblur="commitW('${ex.id}')" style="border-color:${pCol}">
+          <span style="font-size:9px;color:var(--muted)">${ex.u}</span>
         </div>`;
       } else {
-        wHTML = `<button class="weight-btn" onclick="startEdit('${ex.id}')">${w}<span class="weight-unit">${ex.u}</span></button>`;
+        wHTML=`<button class="w-btn" onclick="startEdit('${ex.id}')">${w}<span class="w-unit">${ex.u}</span></button>`;
       }
     }
-
-    let sHTML = "";
-    if (ex.sets) {
-      sHTML = `<div class="sets-row">`;
-      for (let i = 0; i < ex.sets; i++) {
-        const done = !!doneSets[`${gymPlanKey}-${ex.id}-${i}`];
-        sHTML += `<button class="set-btn${done?" done":""}" style="--sc-color:${pCol}"
-          onclick="toggleSet('${ex.id}','${gymPlanKey}',${i})">
-          <span class="set-num">${done?"✓":i+1}</span><span class="set-lbl">set</span>
+    let sHTML="";
+    if(ex.sets){
+      sHTML=`<div class="sets">`;
+      for(let i=0;i<ex.sets;i++){
+        const done=!!doneSets[`${gymKey}-${ex.id}-${i}`];
+        sHTML+=`<button class="set${done?" done":""}" style="--sc:${pCol}"
+          onclick="toggleSet('${ex.id}','${gymKey}',${i})">
+          <span class="set-n">${done?"✓":i+1}</span>
+          <span class="set-l">set</span>
         </button>`;
       }
-      sHTML += `</div>`;
+      sHTML+=`</div>`;
     }
-
-    html += `<div class="ex-row">
-      <div class="ex-top">
+    html+=`<div class="ex-row">
+      <div class="ex-main">
         <div class="ex-info">
           <div class="ex-name">${ex.name}</div>
-          <div class="ex-sets-lbl">${ex.sets?`${ex.sets} × ${ex.reps}`:ex.reps||""}</div>
+          <div class="ex-meta">${ex.sets?`${ex.sets} × ${ex.reps}`:ex.reps||""}</div>
           ${ex.note?`<div class="ex-note">${ex.note}</div>`:""}
           ${ex.prog?`<div class="ex-prog" style="color:${pCol}">↑ ${ex.prog}</div>`:""}
         </div>
@@ -783,191 +909,130 @@ function renderGymFields(sess, si, dk, col, isFirst) {
     </div>`;
   });
 
-  html += `<div style="display:flex;gap:8px;margin-top:14px;">
-    <button class="save-btn" style="background:${prog>=0.5?planCol:"var(--border)"};color:${prog>=0.5?"#fff":"var(--muted)"};" onclick="saveSessionLog(${si})">Finish Session</button>
-    <button class="reset-btn-sm" onclick="clearGymPlan('${gymPlanKey}')">Reset</button>
+  html+=`<div class="action-row">
+    <button class="btn-primary"
+      style="background:${prog>=0.5?planCol:"var(--border)"};color:${prog>=0.5?"#fff":"var(--muted)"}"
+      onclick="saveLog(${si})">Finish Session</button>
+    <button class="btn-ghost" onclick="clearGym('${gymKey}')">Reset</button>
   </div>`;
 
   return html;
 }
 
 // ─── TRAINING HELPERS ─────────────────────────────────────────────────────
-function calcPace(distKm, timeMin) {
-  const d = parseFloat(distKm); const m = parseFloat(timeMin);
-  if (!d || d <= 0 || !m || m <= 0) return null;
-  const paceMin = m / d;
-  const pm = Math.floor(paceMin);
-  const ps = Math.round((paceMin - pm) * 60);
-  return `${pm}:${ps.toString().padStart(2,"0")}`;
+function calcPace(km,min){
+  const d=parseFloat(km),m=parseFloat(min);
+  if(!d||d<=0||!m||m<=0) return null;
+  const p=m/d;
+  return `${Math.floor(p)}:${Math.round((p%1)*60).toString().padStart(2,"0")}`;
 }
-
-function liveUpdatePace(si) {
-  const sessions = getDaySessions(activeTrainingDay);
-  const d = sessions[si]?.data || {};
-  const pace = calcPace(d.distKm, d.timeMin);
-  const paceEl = document.getElementById("pace-"+si);
-  const valEl = document.getElementById("pace-val-"+si);
-  if (!paceEl || !valEl) return;
-  valEl.textContent = pace || "—";
-  paceEl.style.opacity = pace ? "1" : "0.35";
-  const subEl = paceEl.querySelector("div div:last-child");
-  if (subEl) subEl.textContent = (d.distKm && d.timeMin) ? "Calculated" : "Enter distance + time";
+function livePace(si){
+  const s=getDaySessions(trainDay)[si];if(!s) return;
+  const d=s.data||{};
+  const pace=calcPace(d.km,d.min);
+  const el=document.getElementById("pace-"+si);
+  const vEl=document.getElementById("pv-"+si);
+  if(!el||!vEl) return;
+  vEl.textContent=pace||"—";
+  el.style.opacity=pace?"1":"0.3";
 }
-
-function updateSD(si, field, val) {
-  const sessions = getDaySessions(activeTrainingDay);
-  if (!sessions[si]) return;
-  if (!sessions[si].data) sessions[si].data = {};
-  sessions[si].data[field] = val;
-  saveDaySessions(activeTrainingDay, sessions);
+function upd(si,field,val){
+  const arr=getDaySessions(trainDay);
+  if(!arr[si]) return;
+  arr[si].data=arr[si].data||{};
+  arr[si].data[field]=val;
+  saveSessions(trainDay,arr);
 }
-
-function changeSessionType(si, type) {
-  const sessions = getDaySessions(activeTrainingDay);
-  if (!sessions[si]) return;
-  sessions[si].type = type;
-  sessions[si].data = {};
-  sessions[si].gymPlanKey = activeTrainingDay;
-  saveDaySessions(activeTrainingDay, sessions);
-  editingEx = null;
-  renderTraining();
+function changeType(si,type){
+  const arr=getDaySessions(trainDay);
+  arr[si]={type,data:{},gymKey:trainDay};
+  saveSessions(trainDay,arr);
+  editingEx=null;renderTrain();
 }
-
-function changeGymPlan(si, planKey) {
-  const sessions = getDaySessions(activeTrainingDay);
-  if (!sessions[si]) return;
-  sessions[si].gymPlanKey = planKey;
-  saveDaySessions(activeTrainingDay, sessions);
-  renderTraining();
+function changeGymKey(si,key){
+  const arr=getDaySessions(trainDay);
+  arr[si].gymKey=key;
+  saveSessions(trainDay,arr);
+  renderTrain();
 }
-
-function addSession() {
-  const sessions = getDaySessions(activeTrainingDay);
-  if (sessions.length >= 2) return;
-  sessions.push({type:"bjj", data:{}, gymPlanKey: activeTrainingDay});
-  saveDaySessions(activeTrainingDay, sessions);
-  renderTraining();
+function addSession(){
+  const arr=getDaySessions(trainDay);
+  if(arr.length>=2) return;
+  arr.push({type:"bjj",data:{},gymKey:trainDay});
+  saveSessions(trainDay,arr);
+  renderTrain();
 }
-
-function removeSession(si) {
-  const sessions = getDaySessions(activeTrainingDay);
-  sessions.splice(si, 1);
-  saveDaySessions(activeTrainingDay, sessions);
-  renderTraining();
+function removeSession(si){
+  const arr=getDaySessions(trainDay);
+  arr.splice(si,1);
+  saveSessions(trainDay,arr);
+  renderTrain();
 }
-
-function saveSessionLog(si) {
-  const sessions = getDaySessions(activeTrainingDay);
-  const sess = sessions[si]; if (!sess) return;
-  const def = PLAN_DEFAULTS[activeTrainingDay];
-  const st = SESSION_TYPES[sess.type];
-  let summary = "", exercises = [];
-
-  if (sess.type === "run") {
-    const d = sess.data || {};
-    const pace = calcPace(d.distKm, d.timeMin);
-    summary = `${d.distKm||"?"}km in ${d.timeMin||"?"}min • Pace: ${pace||"—"}/km${d.notes?" • "+d.notes:""}`;
-  } else if (sess.type === "bjj") {
-    const d = sess.data || {};
-    summary = `${d.duration||"?"}min • ${d.intensity||"Moderate"} intensity${d.notes?" • "+d.notes:""}`;
-  } else if (sess.type === "gym") {
-    const planKey = sess.gymPlanKey || activeTrainingDay;
-    const plan = GYM_PLANS[planKey];
-    if (plan) exercises = plan.exercises.filter(e=>e.sets).map(e=>({name:e.name,sets:e.sets,w:getW(e.id,e.w??0),u:e.u}));
-    summary = plan ? plan.name : "";
+function saveLog(si){
+  const arr=getDaySessions(trainDay);
+  const sess=arr[si];if(!sess) return;
+  const def=PLAN[trainDay];
+  const st=SESSION_TYPES[sess.type];
+  let summary="",exercises=[];
+  if(sess.type==="rest"){
+    summary="Rest & recovery";
+  } else if(sess.type==="run"){
+    const d=sess.data||{};
+    const pace=calcPace(d.km,d.min);
+    summary=`${d.km||"?"}km in ${d.min||"?"}min · Pace: ${pace||"—"}/km${d.notes?" · "+d.notes:""}`;
+  } else if(sess.type==="bjj"){
+    const d=sess.data||{};
+    summary=`${d.duration||"?"}min · ${d.intensity||"Moderate"} intensity${d.notes?" · "+d.notes:""}`;
+  } else if(sess.type==="gym"){
+    const plan=GYM_PLANS[sess.gymKey||trainDay];
+    if(plan) exercises=plan.exercises.filter(e=>e.sets).map(e=>({name:e.name,sets:e.sets,w:getW(e.id,e.w??0),u:e.u}));
+    summary=plan?plan.name:"";
   }
-
-  const entry = {date:todayStr(), day:activeTrainingDay, title:`${st.name} — ${def.label}`, color:st.color, type:sess.type, summary, exercises};
-  sessionLog = [entry, ...sessionLog.slice(0,29)];
-  sv("session_log_v1", sessionLog);
+  const entry={date:tod(),day:trainDay,title:`${st.name} — ${def.label}`,color:st.color,type:sess.type,summary,exercises};
+  sessionLog=[entry,...sessionLog.slice(0,39)];
+  sv("slog_v1",sessionLog);
   showToast("Session saved!");
 }
-
-function setTrainingDay(dk) { activeTrainingDay = dk; editingEx = null; renderTraining(); }
-function getW(id, def) { return weights[id] !== undefined ? weights[id] : def; }
-function startEdit(id) { editingEx = id; renderTraining(); }
-function commitWeight(id) {
-  const inp = document.getElementById("wi-"+id);
-  if (inp) { const v = parseFloat(inp.value); if(!isNaN(v)){weights[id]=v;sv("w_v1",weights);} }
-  editingEx = null; renderTraining();
+function setDay(dk){ trainDay=dk; editingEx=null; renderTrain(); }
+function getW(id,def){ return weights[id]!==undefined?weights[id]:def; }
+function startEdit(id){ editingEx=id; renderTrain(); }
+function commitW(id){
+  const inp=document.getElementById("wi-"+id);
+  if(inp){ const v=parseFloat(inp.value); if(!isNaN(v)){weights[id]=v;sv("w_v1",weights);} }
+  editingEx=null; renderTrain();
 }
-function toggleSet(exId, planKey, idx) {
-  const key = `${planKey}-${exId}-${idx}`;
-  doneSets[key] = !doneSets[key];
-  sv("s_v1", doneSets);
-  renderTraining();
+function toggleSet(exId,planKey,idx){
+  const k=`${planKey}-${exId}-${idx}`;
+  doneSets[k]=!doneSets[k];
+  sv("s_v1",doneSets);
+  renderTrain();
 }
-function gymProgress(planKey, exercises) {
-  const exs = (exercises || []).filter(e => e.sets);
-  if (!exs.length) return 1;
-  const total = exs.reduce((a,e) => a+e.sets, 0);
-  const done = exs.reduce((a,e) => a + Array.from({length:e.sets},(_,i)=>!!doneSets[`${planKey}-${e.id}-${i}`]).filter(Boolean).length, 0);
-  return total ? done/total : 0;
+function gymProg(planKey,exs){
+  const list=(exs||[]).filter(e=>e.sets);
+  if(!list.length) return 1;
+  const total=list.reduce((a,e)=>a+e.sets,0);
+  const done=list.reduce((a,e)=>a+Array.from({length:e.sets},(_,i)=>!!doneSets[`${planKey}-${e.id}-${i}`]).filter(Boolean).length,0);
+  return total?done/total:0;
 }
-function clearGymPlan(planKey) {
-  const prefix = planKey+"-";
-  Object.keys(doneSets).forEach(k => { if(k.startsWith(prefix)) delete doneSets[k]; });
-  sv("s_v1", doneSets); renderTraining();
+function overallDayProgress(dk,daysess){
+  const gymSess=daysess.filter(s=>s.type==="gym");
+  if(!gymSess.length) return 0;
+  const key=gymSess[0].gymKey||dk;
+  const plan=GYM_PLANS[key];
+  if(!plan) return 0;
+  return gymProg(key,plan.exercises);
 }
-
-// ─── HISTORY PAGE ─────────────────────────────────────────────────────────
-function renderHistory() {
-  const wrap = document.getElementById("page-history");
-  const nLog = ls("nutrition_log_v1",[]);
-  let html = `<div class="page-header"><div class="ph-label">Plan 04</div><div class="ph-title">History</div></div>
-  <div class="history-wrap">
-  <div class="hist-tabs">
-    <button class="hist-tab${histTab==="nutrition"?" active":""}" onclick="histTab='nutrition';renderHistory()">Nutrition</button>
-    <button class="hist-tab${histTab==="training"?" active":""}" onclick="histTab='training';renderHistory()">Training</button>
-  </div>`;
-
-  if (histTab === "nutrition") {
-    if (!nLog.length) {
-      html += `<div class="hist-empty"><div style="font-size:36px">🥗</div><div style="font-size:14px;margin-top:12px">No nutrition days saved yet</div></div>`;
-    } else {
-      nLog.forEach(e => {
-        const pct = Math.round(e.totals.cal/e.targets.cal*100);
-        html += `<div class="hist-entry" style="--ec:${e.color}">
-          <div class="he-head">
-            <div><div class="he-title">${e.activityLabel}</div><div class="he-date">${e.date} · ${e.items} items</div></div>
-            <div style="font-size:12px;color:var(--muted)">${pct}% of goal</div>
-          </div>
-          <div class="he-macros">
-            <span class="he-macro" style="background:rgba(0,0,0,0.05);color:#555">${Math.round(e.totals.cal)}/${e.targets.cal}kcal</span>
-            <span class="he-macro" style="background:rgba(200,57,10,0.08);color:#C8390A">P ${Math.round(e.totals.p)}g</span>
-            <span class="he-macro" style="background:rgba(26,79,168,0.08);color:#1A4FA8">C ${Math.round(e.totals.c)}g</span>
-            <span class="he-macro" style="background:rgba(26,122,72,0.08);color:#1A7A48">F ${Math.round(e.totals.f)}g</span>
-          </div>
-        </div>`;
-      });
-      html += `<button onclick="if(confirm('Clear?')){sv('nutrition_log_v1',[]);renderHistory();}" style="width:100%;padding:13px;border-radius:10px;border:1px solid #e0c8c8;background:transparent;color:#993333;font-size:12px;margin-top:4px;">Clear Nutrition History</button>`;
-    }
-  } else {
-    if (!sessionLog.length) {
-      html += `<div class="hist-empty"><div style="font-size:36px">🏋️</div><div style="font-size:14px;margin-top:12px">No sessions logged yet</div></div>`;
-    } else {
-      sessionLog.forEach(e => {
-        html += `<div class="hist-entry" style="--ec:${e.color||"#888"}">
-          <div class="he-head">
-            <div><div class="he-title">${e.title}</div><div class="he-date">${e.date}</div></div>
-          </div>
-          ${e.summary?`<div style="font-size:12px;color:#666;margin-top:4px;margin-bottom:6px">${e.summary}</div>`:""}
-          ${(e.exercises||[]).map(ex=>`<div class="he-row"><span style="color:#666">${ex.name}</span><span style="color:var(--muted)">${ex.sets}× ${ex.w>0?ex.w+" "+ex.u:"BW"}</span></div>`).join("")}
-        </div>`;
-      });
-      html += `<button onclick="if(confirm('Clear?')){sessionLog=[];sv('session_log_v1',[]);renderHistory();}" style="width:100%;padding:13px;border-radius:10px;border:1px solid #e0c8c8;background:transparent;color:#993333;font-size:12px;margin-top:4px;">Clear Training History</button>`;
-    }
-  }
-
-  html += `</div>`;
-  wrap.innerHTML = html;
+function clearGym(planKey){
+  const prefix=planKey+"-";
+  Object.keys(doneSets).forEach(k=>{ if(k.startsWith(prefix)) delete doneSets[k]; });
+  sv("s_v1",doneSets); renderTrain();
 }
 
-// ─── UTILS ────────────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById("toast");
-  t.textContent = msg; t.classList.add("show");
-  setTimeout(() => t.classList.remove("show"), 2500);
+// ─── TOAST ────────────────────────────────────────────────────────────────
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(()=>t.classList.remove("show"),2200);
 }
 
 // INIT
